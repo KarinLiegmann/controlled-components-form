@@ -1,6 +1,8 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import saveToLocalStorage from './services/saveToLocalStorage'
+import loadLocalStorage from './services/loadLocalStorage'
 
 import Button from './Button'
 
@@ -30,11 +32,28 @@ export default function Form({ onClickFunction }) {
 
 
 
-
     /* useEffect(() => {
-         localStorage.setItem('productInformation', JSON.stringify(productInfo))
-     }, [productInfo]) */
+        saveToLocalStorage('productInformation', productInfo)
+    }, [productInfo]) */
 
+
+
+    const onClickAddCard = ((event) => {
+        event.preventDefault();
+
+        const field = event.target;
+        const value = field.type === 'checkbox' ? field.checked : field.value;
+
+        const newItem = {
+            ...productInfo,
+            [field.name]: value
+        }
+
+        console.log(newItem)
+
+        saveToLocalStorage('productInformation', newItem)
+        setProductInfo(loadLocalStorage('productInformation'), newItem)
+    })
 
 
 
@@ -109,18 +128,22 @@ export default function Form({ onClickFunction }) {
                     type="checkbox"
                     name="on_sale"
                     onChange={handleChange}
-                    value={1} // MUSS angegeben werden, damit beim Abschicken etwas mitgeschickt wird
+                    value={1} // MUSS angegeben werden zur serverseitigen Zuordnung
                     checked={productInfo.on_sale}
                     className="bigCheckbox" />
                 <label>On Sale</label>
             </FormSection>
 
             <FormSection>
-                <Button className="addButton" onClickFunction={saveToLocalStorage('productInformation', productInfo)} text="Add" />
+                <Button className="addButton" text="Add" onClickFunction={onClickAddCard} />
                 <Button className="cancelButton" text="Cancel" />
             </FormSection>
         </MainForm>
     )
+}
+
+Form.propTypes = {
+    onClickFunction: PropTypes.func,
 }
 
 const MainForm = styled.form`

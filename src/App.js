@@ -5,12 +5,7 @@ import Form from './Form'
 import Card from './Card'
 
 function App() {
-  const [cardInfos, setCardInfos] = useState([loadLocalStorage('productInformation')] ?? [])
-
-  useState(() => {
-    loadLocalStorage('productInformation')
-    console.log(cardInfos)
-  }, [])
+  const [cardInfos, setCardInfos] = useState(loadLocalStorage('productInformation') ?? [])
 
 
 
