@@ -10,7 +10,7 @@ import Button from './Button'
 export default function Form({ submitFunction }) {
     const initialProduct = {
         product_name: '',
-        price: '',
+        price: 0,
         currency: '$USD',
         category: '',
         package_size: '', // camelCase?
@@ -77,14 +77,19 @@ export default function Form({ submitFunction }) {
                     name="price"
                     onChange={handleChange}
                     value={product.price}
+                    size="5"
                 />
                 <label>Currency: </label>
-                <input
+                <select
                     type="text"
                     name="currency"
                     onChange={handleChange}
                     value={product.currency}
-                />
+                >
+                    <option value="$USD">$ USD</option>
+                    <option value="€EUR">€ EUR</option>
+                    <option value="¥YEN">¥ JPY</option>
+                </select>
             </FormSection>
 
             <FormSection>
@@ -93,7 +98,7 @@ export default function Form({ submitFunction }) {
                     name="category"
                     onChange={handleChange}
                     value={product.category}>
-                    <option value="">[ Please Select ]</option> // method so user HAS to pick a choice
+                    <option value="">-- Please Select --</option> // method so user HAS to pick a choice
                     <option value="books">Books</option>
                     <option value="video_games">Video Games</option>
                     <option value="music">Music</option>
@@ -108,17 +113,19 @@ export default function Form({ submitFunction }) {
             </FormSection>
 
             <FormSection>
-                <label>Support contact (email): </label>
+                <label>Support contact: </label>
                 <input
                     type="text"
                     name="email"
                     onChange={handleChange}
-                    value={product.email} />
+                    value={product.email}
+                    size="18" />
+
             </FormSection>
 
-            <FormSection>
+            <div>
                 <Tags createTag={addTag} onDeleteTag={deleteTag} tags={product.product_tags} />
-            </FormSection>
+            </div>
 
             <FormSection>
                 <input
@@ -131,10 +138,10 @@ export default function Form({ submitFunction }) {
                 <label>On Sale</label>
             </FormSection>
 
-            <FormSection>
+            <ButtonContainer>
                 <Button className="addButton" text="Add" />
                 <Button className="cancelButton" type="reset" text="Cancel" />
-            </FormSection>
+            </ButtonContainer>
         </MainForm>
     )
 }
@@ -145,7 +152,6 @@ Form.propTypes = {
     currency: PropTypes.string,
     email: PropTypes.string,
 
-
     onClickFunction: PropTypes.func,
 
 }
@@ -155,45 +161,47 @@ background: linear-gradient(rgba(85, 204, 212, 1), rgba(199, 218, 199, 1), rgba(
 border-radius: 5px;
 display: flex;
 flex-direction: column;
-margin: 2rem;
-padding: 1rem;
+margin: .5rem;
+padding: .5rem;
+width: 100%;
 `
 
 const FormSection = styled.section`
-display: flex;
-margin: 0.6rem 1rem;
+display: inline;
+margin: .6rem .3rem;
+width: 98%;
 
 input {
     border-radius: 5px;
-    font-size: .9rem
-}
-
-label + input {
-    margin-left: .7rem;
+    font-size: .9rem;
+    border-style: none;
+    border: 1px solid grey;
 }
 
 input + label {
-    margin-left: .7rem;
-}
-
-input + input {
-    margin-left: 1rem;
+    margin-left: .3rem;
 }
 
 select {
-    font-size: .9rem;
-    margin-left: 1rem;
+    border-style: 1px solid grey;
+    font-size: 0.9rem;
+    margin-left: .3rem;
 }
-
 
 input[type="radio"] {
-    margin-left: 1rem;
-    transform: scale(1.3)
+    transform: scale(1.3);
 }
+
 
 input[type="checkbox"] {
     transform: scale(1.4);
 }
+`
+
+const ButtonContainer = styled.div`
+display: flex;
+justify-content: space-evenly;
+margin: 1.5rem 0;
 
 .addButton {
     background: white;
@@ -213,8 +221,4 @@ input[type="checkbox"] {
     background: #F66987;
     color: white;
     }
-}
-
-
 `
-

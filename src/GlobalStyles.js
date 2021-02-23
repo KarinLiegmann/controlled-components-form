@@ -7,8 +7,12 @@ export default createGlobalStyle`
 
 body {
     font-family: 'Open Sans', sans-serif;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    font-size: 1rem;
     margin: 0;
+    width: 360px;
+}
+
+h2 {
+    margin: .7rem .5rem;
 }
 `

@@ -17,7 +17,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <Wrapper className="App">
       <Form submitFunction={addProduct} />
 
       {products.map((product) => (
@@ -27,8 +27,16 @@ function App() {
         />
       ))}
 
-    </div>
+    </Wrapper>
   );
 }
 
 export default App;
+
+
+const Wrapper = styled.div`
+display: flex;
+direction: column;
+flex-wrap: wrap;
+width: 360px;
+`
