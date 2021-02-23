@@ -69,8 +69,12 @@ export default function Form({ submitFunction }) {
 
 
 
-    const highlightTag = (indexToHighlight) => {
-        product.product_tags.map((tag, index) => console.log(index, 'Form-Component'))
+    const highlightTag = (lengthToFind) => {
+        if (product.product_tags.length === lengthToFind) {
+            console.log(product.product_tags.value)
+
+        }
+
     }
 
 

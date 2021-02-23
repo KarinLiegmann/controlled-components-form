@@ -8,38 +8,35 @@ export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, onArro
 
     const handleChange = (event) => setValue(event.target.value)
 
+
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault()
             createTag(value)
             setValue('')
         }
-    }
 
-    /* const handleArrowLeftDown = (tags) => {
-        tags.map((tag, index) => console.log(tag))
-    } */
+        if (event.key === 'Backspace') {
+            event.preventDefault()
+            onBackspaceDelete()
+        }
 
-
+        if (event.key === 'ArrowLeft') {
+            if (tags.length > 0) {
+                let newLength = tags.length
+                newLength = tags.length--
+                console.log(newLength, tags.value, 'length')
+                onArrowLeftHighlight(newLength)
+            }
+        }
+    };
 
 
 
     return (
         <TagWrapper>
             <label>Product Tags: </label>
-            <TagDiv onKeyDown={(event) => {
-                if (event.key === 'Backspace') {
-                    onBackspaceDelete()
-                }
-                if (event.key === 'ArrowLeft') {
-                    const handleArrowLeftDown = onArrowLeftHighlight()
-                    /* let currywurste = [...tags.keys()]
-                    console.log(currywurste) */
-
-                    let newIndex = (tags.length) - 1
-                    console.log(newIndex)
-                }
-            }}>
+            <TagDiv onKeyDown={() => handleKeyDown} >
                 {tags.map((tag, index) =>
                 (<span
 
