@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
+import Tags from './Tags'
 
 
 import Button from './Button'
@@ -34,6 +35,13 @@ export default function Form({ submitFunction }) {
         event.preventDefault();
         submitFunction(product); // wird eigentlich auf dem Parent aufgerufen
         setProduct(initialProduct)
+    }
+
+    const addTag = (tag) => {
+        setProduct({
+            ...product,
+            product_tags: [...product.product_tags, tag]
+        })
     }
 
 
@@ -75,7 +83,7 @@ export default function Form({ submitFunction }) {
                     name="category"
                     onChange={handleChange}
                     value={product.category}>
-                    <option value="">[Please Select]</option> // method so user HAS to pick a choice
+                    <option value="">[ Please Select ]</option> // method so user HAS to pick a choice
                     <option value="books">Books</option>
                     <option value="video_games">Video Games</option>
                     <option value="music">Music</option>
@@ -99,10 +107,7 @@ export default function Form({ submitFunction }) {
             </FormSection>
 
             <FormSection>
-                <label>Product Tags: </label>
-                <input
-                    type="text"
-                    name="product_tags" />
+                <Tags createTag={addTag} tags={product.product_tags} />
             </FormSection>
 
             <FormSection>
@@ -182,7 +187,7 @@ input[type="checkbox"] {
 
 .addButton {
     background: white;
-    border: 2px solid #55CCD4;  
+    border: 2px solid white;  
 
     &:hover {
         background: #55CCD4;
@@ -192,7 +197,7 @@ input[type="checkbox"] {
 
 .cancelButton {
     background: white;
-    border: 2px solid #F66987;
+    border: 2px solid white;
 
     &:hover {
     background: #F66987;

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 
 export default function Card({ product }) {
+    console.log(product)
     return (
         <CardWrapper>
             <h2>Product: {product.product_name}</h2>
