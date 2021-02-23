@@ -9,7 +9,7 @@ function App() {
   const [product, setProduct] = useState({
     product_name: '',
     price: '',
-    currency: '$',
+    currency: '$USD',
     category: '',
     package_size: '', // camelCase?
     email: '',
@@ -27,21 +27,20 @@ function App() {
     })
   })
 
-  const [cardInfos, setCardInfos] = useState([])
+  const [cards, setCards] = useState([])
 
   const addCard = ((event) => {
     event.preventDefault();
 
     const field = event.target;
-    const value = field.type === 'checkbox' ? field.checked : field.value;
+    const value = field.name === 'on_sale' ? field.checked : field.value;
 
     const newItem = {
       ...product,
       [field.name]: value
-
     }
 
-    setCardInfos([...cardInfos, newItem])
+    setCards([...cards, newItem])
 
   })
 
@@ -52,10 +51,18 @@ function App() {
     <div className="App">
 
       <Form
+        product_name={product.product_name}
+        price={product.price}
+        currency={product.currency}
+        category={product.category}
+        package_size={product.package_size}
+        email={product.email}
+        product_tags={product.product_tags}
+        on_sale={product.on_sale}
         onChangeFunction={handleChange}
         onClickFunction={addCard} />
 
-      {cardInfos.map(({ product_name, price, currency, category, package_size, email, product_tags, on_sale }) => (
+      {cards.map(({ product_name, price, currency, category, package_size, email, product_tags, on_sale }) => (
         <Card
           product_name={product_name}
           price={price}

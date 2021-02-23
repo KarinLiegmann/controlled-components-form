@@ -7,27 +7,6 @@ import Button from './Button'
 
 
 export default function Form({ product_name, price, currency, category, package_size, email, product_tags, on_sale, onClickFunction, onChangeFunction }) {
-    /* const [product, setProduct] = useState({
-        name: '',
-        price: '',
-        currency: '$',
-        category: '',
-        package_size: '', // camelCase?
-        email: '',
-        product_tags: [],
-        on_sale: false
-    }) */
-
-
-    /* const handleChange = ((event) => {
-        const field = event.target;
-        const value = field.type === 'checkbox' ? field.checked : field.value;
-
-        setProduct({
-            ...product,
-            [field.name]: value
-        })
-    }) */
 
 
     return (
@@ -109,13 +88,18 @@ export default function Form({ product_name, price, currency, category, package_
 
             <FormSection>
                 <Button className="addButton" text="Add" onClickFunction={onClickFunction} />
-                <Button className="cancelButton" text="Cancel" />
+                <Button className="cancelButton" type="reset" text="Cancel" />
             </FormSection>
         </MainForm>
     )
 }
 
 Form.propTypes = {
+    product_name: PropTypes.string,
+    price: PropTypes.number,
+    currency: PropTypes.string,
+    email: PropTypes.string,
+
 
     onClickFunction: PropTypes.func,
 
