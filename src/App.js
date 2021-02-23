@@ -5,7 +5,45 @@ import Form from './Form'
 import Card from './Card'
 
 function App() {
-  const [cardInfos, setCardInfos] = useState(loadLocalStorage('productInformation') ?? [])
+
+  const [product, setProduct] = useState({
+    product_name: '',
+    price: '',
+    currency: '$',
+    category: '',
+    package_size: '', // camelCase?
+    email: '',
+    product_tags: [],
+    on_sale: false
+  })
+
+  const handleChange = ((event) => {
+    const field = event.target;
+    const value = field.type === 'checkbox' ? field.checked : field.value;
+
+    setProduct({
+      ...product,
+      [field.name]: value
+    })
+  })
+
+  const [cardInfos, setCardInfos] = useState([])
+
+  const addCard = ((event) => {
+    event.preventDefault();
+
+    const field = event.target;
+    const value = field.type === 'checkbox' ? field.checked : field.value;
+
+    const newItem = {
+      ...product,
+      [field.name]: value
+
+    }
+
+    setCardInfos([...cardInfos, newItem])
+
+  })
 
 
 
@@ -13,7 +51,9 @@ function App() {
   return (
     <div className="App">
 
-      <Form />
+      <Form
+        onChangeFunction={handleChange}
+        onClickFunction={addCard} />
 
       {cardInfos.map(({ product_name, price, currency, category, package_size, email, product_tags, on_sale }) => (
         <Card

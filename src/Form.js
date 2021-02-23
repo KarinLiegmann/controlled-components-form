@@ -1,15 +1,14 @@
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
-import saveToLocalStorage from './services/saveToLocalStorage'
-import loadLocalStorage from './services/loadLocalStorage'
+
 
 import Button from './Button'
 
 
-export default function Form({ onClickFunction }) {
-    const [productInfo, setProductInfo] = useState({
-        product_name: '',
+export default function Form({ product_name, price, currency, category, package_size, email, product_tags, on_sale, onClickFunction, onChangeFunction }) {
+    /* const [product, setProduct] = useState({
+        name: '',
         price: '',
         currency: '$',
         category: '',
@@ -17,44 +16,18 @@ export default function Form({ onClickFunction }) {
         email: '',
         product_tags: [],
         on_sale: false
-    })
+    }) */
 
 
-    const handleChange = ((event) => {
+    /* const handleChange = ((event) => {
         const field = event.target;
         const value = field.type === 'checkbox' ? field.checked : field.value;
 
-        setProductInfo({
-            ...productInfo,
+        setProduct({
+            ...product,
             [field.name]: value
         })
-    })
-
-
-
-    /* useEffect(() => {
-        saveToLocalStorage('productInformation', productInfo)
-    }, [productInfo]) */
-
-
-
-    const onClickAddCard = ((event) => {
-        event.preventDefault();
-
-        const field = event.target;
-        const value = field.type === 'checkbox' ? field.checked : field.value;
-
-        const newItem = {
-            ...productInfo,
-            [field.name]: value
-        }
-
-        console.log(newItem)
-
-        saveToLocalStorage('productInformation', newItem)
-        setProductInfo(loadLocalStorage('productInformation'), newItem)
-    })
-
+    }) */
 
 
     return (
@@ -66,8 +39,8 @@ export default function Form({ onClickFunction }) {
                 <input
                     type="text"
                     name="product_name"
-                    onChange={handleChange}
-                    value={productInfo.product_name}
+                    onChange={onChangeFunction}
+                    value={product_name}
                 />
             </FormSection>
 
@@ -76,15 +49,15 @@ export default function Form({ onClickFunction }) {
                 <input
                     type="text"
                     name="price"
-                    onChange={handleChange}
-                    value={productInfo.price}
+                    onChange={onChangeFunction}
+                    value={price}
                 />
                 <label>Currency: </label>
                 <input
                     type="text"
                     name="currency"
-                    onChange={handleChange}
-                    value={productInfo.currency}
+                    onChange={onChangeFunction}
+                    value={currency}
                 />
             </FormSection>
 
@@ -92,8 +65,8 @@ export default function Form({ onClickFunction }) {
                 <label>Category: </label>
                 <select
                     name="category"
-                    onChange={handleChange}
-                    value={productInfo.category}>
+                    onChange={onChangeFunction}
+                    value={category}>
                     <option value="books">Books</option>
                     <option value="video_games">Video Games</option>
                     <option value="music">Music</option>
@@ -102,9 +75,9 @@ export default function Form({ onClickFunction }) {
 
             <FormSection>
                 <label>Package Size: </label>
-                <input type="radio" name="package_size" onChange={handleChange} value="small" checked={productInfo.package_size === 'small'} /> S
-                <input type="radio" name="package_size" onChange={handleChange} value="medium" checked={productInfo.package_size === 'medium'} /> M
-                <input type="radio" name="package_size" onChange={handleChange} value="large" checked={productInfo.package_size === 'large'} /> L
+                <input type="radio" name="package_size" onChange={onChangeFunction} value="small" checked={package_size === 'small'} /> S
+                <input type="radio" name="package_size" onChange={onChangeFunction} value="medium" checked={package_size === 'medium'} /> M
+                <input type="radio" name="package_size" onChange={onChangeFunction} value="large" checked={package_size === 'large'} /> L
             </FormSection>
 
             <FormSection>
@@ -112,8 +85,8 @@ export default function Form({ onClickFunction }) {
                 <input
                     type="text"
                     name="email"
-                    onChange={handleChange}
-                    value={productInfo.email} />
+                    onChange={onChangeFunction}
+                    value={email} />
             </FormSection>
 
             <FormSection>
@@ -127,15 +100,15 @@ export default function Form({ onClickFunction }) {
                 <input
                     type="checkbox"
                     name="on_sale"
-                    onChange={handleChange}
+                    onChange={onChangeFunction}
                     value={1} // MUSS angegeben werden zur serverseitigen Zuordnung
-                    checked={productInfo.on_sale}
+                    checked={on_sale}
                     className="bigCheckbox" />
                 <label>On Sale</label>
             </FormSection>
 
             <FormSection>
-                <Button className="addButton" text="Add" onClickFunction={onClickAddCard} />
+                <Button className="addButton" text="Add" onClickFunction={onClickFunction} />
                 <Button className="cancelButton" text="Cancel" />
             </FormSection>
         </MainForm>
@@ -143,7 +116,9 @@ export default function Form({ onClickFunction }) {
 }
 
 Form.propTypes = {
+
     onClickFunction: PropTypes.func,
+
 }
 
 const MainForm = styled.form`

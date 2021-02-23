@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export default function Card({ product_name, price, currency, category, package_size, email, product_tags, on_sale }) {
     return (
         <CardWrapper>
-            <h2>{product_name}</h2>
+            <h2>Product: {product_name}</h2>
             <p>Price: {price}</p>
             <p>Currency: {currency}</p>
             <p>Category: {category}</p>
