@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 
-export default function Tags({ createTag, tags }) {
+export default function Tags({ createTag, onDeleteTag, tags }) {
     const [value, setValue] = useState('')
 
 
@@ -17,6 +17,8 @@ export default function Tags({ createTag, tags }) {
     }
 
 
+
+
     return (
         <section>
             <label>Product Tags: </label>
@@ -28,9 +30,8 @@ export default function Tags({ createTag, tags }) {
                 onKeyDown={handleKeyDown} />
 
             <TagList>
-
                 {tags.map((tag, index) =>
-                    (<span key={index}>{tag}</span>)
+                    (<span key={index}>{tag}<i onClick={() => onDeleteTag(tag)}>&times;</i></span>)
                 )}
             </TagList>
 

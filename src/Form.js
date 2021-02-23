@@ -45,6 +45,16 @@ export default function Form({ submitFunction }) {
     }
 
 
+    const deleteTag = (tagToDelete) => {
+        const allRemainingTags = product.product_tags.filter((tag) => (tag !== tagToDelete))
+
+        setProduct({
+            ...product,
+            product_tags: allRemainingTags
+        })
+    }
+
+
 
     return (
         <MainForm onSubmit={submitForm}>
@@ -107,7 +117,7 @@ export default function Form({ submitFunction }) {
             </FormSection>
 
             <FormSection>
-                <Tags createTag={addTag} tags={product.product_tags} />
+                <Tags createTag={addTag} onDeleteTag={deleteTag} tags={product.product_tags} />
             </FormSection>
 
             <FormSection>
