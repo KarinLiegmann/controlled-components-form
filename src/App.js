@@ -21,7 +21,9 @@ function App() {
       <Form submitFunction={addProduct} />
 
       {products.map((product) => (
-        <Card product={product}
+        <Card
+          product={product}
+          key={product.id}
         />
       ))}
 
