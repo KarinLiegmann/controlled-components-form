@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 
-export default function Tags({ createTag, onDeleteTag, tags }) {
+export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, tags }) {
     const [value, setValue] = useState('')
 
 
@@ -19,9 +19,19 @@ export default function Tags({ createTag, onDeleteTag, tags }) {
     return (
         <TagWrapper>
             <label>Product Tags: </label>
-            <TagDiv>
+            <TagDiv onKeyDown={(event) => {
+                if (event.key === 'Backspace') {
+                    onBackspaceDelete()
+                }
+            }}>
                 {tags.map((tag, index) =>
-                    (<span key={index}>{tag}<i onClick={() => onDeleteTag(tag)}>&times;</i></span>)
+                (<span
+
+                    key={index}>
+                    {tag}
+                    <i onClick={() => onDeleteTag(tag)}>
+                        &times;</i>
+                </span>)
                 )}
                 <input
                     type="text"

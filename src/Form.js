@@ -54,6 +54,19 @@ export default function Form({ submitFunction }) {
         })
     }
 
+    const removeLastTag = () => {
+        if (product.product_tags.length) {
+            const lastTag = product.product_tags.pop()
+            console.log(lastTag)
+            const tagsToKeep = product.product_tags.filter((tag) => (tag !== lastTag))
+
+            setProduct({
+                ...product,
+                product_tags: tagsToKeep
+            })
+        }
+    }
+
 
 
     return (
@@ -124,7 +137,11 @@ export default function Form({ submitFunction }) {
             </FormSection>
 
             <div>
-                <Tags createTag={addTag} onDeleteTag={deleteTag} tags={product.product_tags} />
+                <Tags
+                    createTag={addTag}
+                    onDeleteTag={deleteTag}
+                    onBackspaceDelete={removeLastTag}
+                    tags={product.product_tags} />
             </div>
 
             <FormSection>
