@@ -6,11 +6,40 @@ import { useState, useEffect } from 'react'
 import Button from './Button'
 
 
-export default function Form({ product_name, price, currency, category, package_size, email, product_tags, on_sale, onClickFunction, onChangeFunction }) {
+export default function Form({ submitFunction }) {
+    const initialProduct = {
+        product_name: '',
+        price: '',
+        currency: '$USD',
+        category: '',
+        package_size: '', // camelCase?
+        email: '',
+        product_tags: [],
+        on_sale: false
+    }
+
+    const [product, setProduct] = useState(initialProduct)
+
+    const handleChange = ((event) => {
+        const field = event.target;
+        const value = field.type === 'checkbox' ? field.checked : field.value;
+
+        setProduct({
+            ...product,
+            [field.name]: value
+        })
+    })
+
+    function submitForm(event) {
+        event.preventDefault();
+        submitFunction(product); // wird eigentlich auf dem Parent aufgerufen
+        setProduct(initialProduct)
+    }
+
 
 
     return (
-        <MainForm>
+        <MainForm onSubmit={submitForm}>
             <h2>New Product</h2>
 
             <FormSection>
@@ -18,8 +47,8 @@ export default function Form({ product_name, price, currency, category, package_
                 <input
                     type="text"
                     name="product_name"
-                    onChange={onChangeFunction}
-                    value={product_name}
+                    onChange={handleChange}
+                    value={product.product_name}
                 />
             </FormSection>
 
@@ -28,15 +57,15 @@ export default function Form({ product_name, price, currency, category, package_
                 <input
                     type="text"
                     name="price"
-                    onChange={onChangeFunction}
-                    value={price}
+                    onChange={handleChange}
+                    value={product.price}
                 />
                 <label>Currency: </label>
                 <input
                     type="text"
                     name="currency"
-                    onChange={onChangeFunction}
-                    value={currency}
+                    onChange={handleChange}
+                    value={product.currency}
                 />
             </FormSection>
 
@@ -44,8 +73,9 @@ export default function Form({ product_name, price, currency, category, package_
                 <label>Category: </label>
                 <select
                     name="category"
-                    onChange={onChangeFunction}
-                    value={category}>
+                    onChange={handleChange}
+                    value={product.category}>
+                    <option value="">[Please Select]</option> // method so user HAS to pick a choice
                     <option value="books">Books</option>
                     <option value="video_games">Video Games</option>
                     <option value="music">Music</option>
@@ -54,9 +84,9 @@ export default function Form({ product_name, price, currency, category, package_
 
             <FormSection>
                 <label>Package Size: </label>
-                <input type="radio" name="package_size" onChange={onChangeFunction} value="small" checked={package_size === 'small'} /> S
-                <input type="radio" name="package_size" onChange={onChangeFunction} value="medium" checked={package_size === 'medium'} /> M
-                <input type="radio" name="package_size" onChange={onChangeFunction} value="large" checked={package_size === 'large'} /> L
+                <input type="radio" name="package_size" onChange={handleChange} value="small" checked={product.package_size === 'small'} /> S
+                <input type="radio" name="package_size" onChange={handleChange} value="medium" checked={product.package_size === 'medium'} /> M
+                <input type="radio" name="package_size" onChange={handleChange} value="large" checked={product.package_size === 'large'} /> L
             </FormSection>
 
             <FormSection>
@@ -64,8 +94,8 @@ export default function Form({ product_name, price, currency, category, package_
                 <input
                     type="text"
                     name="email"
-                    onChange={onChangeFunction}
-                    value={email} />
+                    onChange={handleChange}
+                    value={product.email} />
             </FormSection>
 
             <FormSection>
@@ -79,15 +109,15 @@ export default function Form({ product_name, price, currency, category, package_
                 <input
                     type="checkbox"
                     name="on_sale"
-                    onChange={onChangeFunction}
+                    onChange={handleChange}
                     value={1} // MUSS angegeben werden zur serverseitigen Zuordnung
-                    checked={on_sale}
+                    checked={product.on_sale}
                     className="bigCheckbox" />
                 <label>On Sale</label>
             </FormSection>
 
             <FormSection>
-                <Button className="addButton" text="Add" onClickFunction={onClickFunction} />
+                <Button className="addButton" text="Add" />
                 <Button className="cancelButton" type="reset" text="Cancel" />
             </FormSection>
         </MainForm>
