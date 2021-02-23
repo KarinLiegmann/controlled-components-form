@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 
-export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, tags }) {
+export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, onArrowLeftHighlight, tags }) {
     const [value, setValue] = useState('')
 
 
@@ -16,12 +16,28 @@ export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, tags }
         }
     }
 
+    /* const handleArrowLeftDown = (tags) => {
+        tags.map((tag, index) => console.log(tag))
+    } */
+
+
+
+
+
     return (
         <TagWrapper>
             <label>Product Tags: </label>
             <TagDiv onKeyDown={(event) => {
                 if (event.key === 'Backspace') {
                     onBackspaceDelete()
+                }
+                if (event.key === 'ArrowLeft') {
+                    const handleArrowLeftDown = onArrowLeftHighlight()
+                    /* let currywurste = [...tags.keys()]
+                    console.log(currywurste) */
+
+                    let newIndex = (tags.length) - 1
+                    console.log(newIndex)
                 }
             }}>
                 {tags.map((tag, index) =>
@@ -39,10 +55,10 @@ export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, tags }
                     value={value}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
-                    size="5" />
+                />
             </TagDiv>
 
-        </TagWrapper>
+        </TagWrapper >
     )
 }
 

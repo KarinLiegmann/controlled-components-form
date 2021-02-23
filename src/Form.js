@@ -69,6 +69,14 @@ export default function Form({ submitFunction }) {
 
 
 
+    const highlightTag = (indexToHighlight) => {
+        product.product_tags.map((tag, index) => console.log(index, 'Form-Component'))
+    }
+
+
+
+
+
     return (
         <MainForm onSubmit={submitForm}>
             <h2>New Product</h2>
@@ -141,6 +149,7 @@ export default function Form({ submitFunction }) {
                     createTag={addTag}
                     onDeleteTag={deleteTag}
                     onBackspaceDelete={removeLastTag}
+                    onArrowLeftHighlight={highlightTag}
                     tags={product.product_tags} />
             </div>
 
