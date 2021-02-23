@@ -1,64 +1,63 @@
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
-import saveToLocalStorage from './services/saveToLocalStorage'
-import loadLocalStorage from './services/loadLocalStorage'
+import Tags from './Tags'
+
 
 import Button from './Button'
 
 
-export default function Form({ onClickFunction }) {
-    const [productInfo, setProductInfo] = useState({
+export default function Form({ submitFunction }) {
+    const initialProduct = {
         product_name: '',
         price: '',
-        currency: '$',
+        currency: '$USD',
         category: '',
         package_size: '', // camelCase?
         email: '',
         product_tags: [],
         on_sale: false
-    })
+    }
 
+    const [product, setProduct] = useState(initialProduct)
 
     const handleChange = ((event) => {
         const field = event.target;
         const value = field.type === 'checkbox' ? field.checked : field.value;
 
-        setProductInfo({
-            ...productInfo,
+        setProduct({
+            ...product,
             [field.name]: value
         })
     })
 
-
-
-    /* useEffect(() => {
-        saveToLocalStorage('productInformation', productInfo)
-    }, [productInfo]) */
-
-
-
-    const onClickAddCard = ((event) => {
+    function submitForm(event) {
         event.preventDefault();
+        submitFunction(product); // wird eigentlich auf dem Parent aufgerufen
+        setProduct(initialProduct)
+    }
 
-        const field = event.target;
-        const value = field.type === 'checkbox' ? field.checked : field.value;
+    const addTag = (tag) => {
+        setProduct({
+            ...product,
+            product_tags: [...product.product_tags, tag]
+        })
+    }
 
-        const newItem = {
-            ...productInfo,
-            [field.name]: value
-        }
 
-        console.log(newItem)
+    const deleteTag = (tagToDelete) => {
+        const allRemainingTags = product.product_tags.filter((tag) => (tag !== tagToDelete))
 
-        saveToLocalStorage('productInformation', newItem)
-        setProductInfo(loadLocalStorage('productInformation'), newItem)
-    })
+        setProduct({
+            ...product,
+            product_tags: allRemainingTags
+        })
+    }
 
 
 
     return (
-        <MainForm>
+        <MainForm onSubmit={submitForm}>
             <h2>New Product</h2>
 
             <FormSection>
@@ -67,7 +66,7 @@ export default function Form({ onClickFunction }) {
                     type="text"
                     name="product_name"
                     onChange={handleChange}
-                    value={productInfo.product_name}
+                    value={product.product_name}
                 />
             </FormSection>
 
@@ -77,14 +76,14 @@ export default function Form({ onClickFunction }) {
                     type="text"
                     name="price"
                     onChange={handleChange}
-                    value={productInfo.price}
+                    value={product.price}
                 />
                 <label>Currency: </label>
                 <input
                     type="text"
                     name="currency"
                     onChange={handleChange}
-                    value={productInfo.currency}
+                    value={product.currency}
                 />
             </FormSection>
 
@@ -93,7 +92,8 @@ export default function Form({ onClickFunction }) {
                 <select
                     name="category"
                     onChange={handleChange}
-                    value={productInfo.category}>
+                    value={product.category}>
+                    <option value="">[ Please Select ]</option> // method so user HAS to pick a choice
                     <option value="books">Books</option>
                     <option value="video_games">Video Games</option>
                     <option value="music">Music</option>
@@ -102,9 +102,9 @@ export default function Form({ onClickFunction }) {
 
             <FormSection>
                 <label>Package Size: </label>
-                <input type="radio" name="package_size" onChange={handleChange} value="small" checked={productInfo.package_size === 'small'} /> S
-                <input type="radio" name="package_size" onChange={handleChange} value="medium" checked={productInfo.package_size === 'medium'} /> M
-                <input type="radio" name="package_size" onChange={handleChange} value="large" checked={productInfo.package_size === 'large'} /> L
+                <input type="radio" name="package_size" onChange={handleChange} value="small" checked={product.package_size === 'small'} /> S
+                <input type="radio" name="package_size" onChange={handleChange} value="medium" checked={product.package_size === 'medium'} /> M
+                <input type="radio" name="package_size" onChange={handleChange} value="large" checked={product.package_size === 'large'} /> L
             </FormSection>
 
             <FormSection>
@@ -113,14 +113,11 @@ export default function Form({ onClickFunction }) {
                     type="text"
                     name="email"
                     onChange={handleChange}
-                    value={productInfo.email} />
+                    value={product.email} />
             </FormSection>
 
             <FormSection>
-                <label>Product Tags: </label>
-                <input
-                    type="text"
-                    name="product_tags" />
+                <Tags createTag={addTag} onDeleteTag={deleteTag} tags={product.product_tags} />
             </FormSection>
 
             <FormSection>
@@ -129,21 +126,28 @@ export default function Form({ onClickFunction }) {
                     name="on_sale"
                     onChange={handleChange}
                     value={1} // MUSS angegeben werden zur serverseitigen Zuordnung
-                    checked={productInfo.on_sale}
+                    checked={product.on_sale}
                     className="bigCheckbox" />
                 <label>On Sale</label>
             </FormSection>
 
             <FormSection>
-                <Button className="addButton" text="Add" onClickFunction={onClickAddCard} />
-                <Button className="cancelButton" text="Cancel" />
+                <Button className="addButton" text="Add" />
+                <Button className="cancelButton" type="reset" text="Cancel" />
             </FormSection>
         </MainForm>
     )
 }
 
 Form.propTypes = {
+    product_name: PropTypes.string,
+    price: PropTypes.number,
+    currency: PropTypes.string,
+    email: PropTypes.string,
+
+
     onClickFunction: PropTypes.func,
+
 }
 
 const MainForm = styled.form`
@@ -193,7 +197,7 @@ input[type="checkbox"] {
 
 .addButton {
     background: white;
-    border: 2px solid #55CCD4;  
+    border: 2px solid white;  
 
     &:hover {
         background: #55CCD4;
@@ -203,7 +207,7 @@ input[type="checkbox"] {
 
 .cancelButton {
     background: white;
-    border: 2px solid #F66987;
+    border: 2px solid white;
 
     &:hover {
     background: #F66987;

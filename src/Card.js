@@ -1,17 +1,18 @@
 import styled from 'styled-components'
 
 
-export default function Card({ product_name, price, currency, category, package_size, email, product_tags, on_sale }) {
+export default function Card({ product }) {
+    console.log(product)
     return (
         <CardWrapper>
-            <h2>{product_name}</h2>
-            <p>Price: {price}</p>
-            <p>Currency: {currency}</p>
-            <p>Category: {category}</p>
-            <p>Package Size: {package_size}</p>
-            <p>Support Contact: {email}</p>
-            <p>Product Tags: {product_tags}</p>
-            <p>On Sale: {on_sale}</p>
+            <h2>Product: {product.product_name}</h2>
+            <p>Price: {product.price}</p>
+            <p>Currency: {product.currency}</p>
+            <p>Category: {product.category}</p>
+            <p>Package Size: {product.package_size}</p>
+            <p>Support Contact: {product.email}</p>
+            <p>Product Tags: {product.product_tags}</p>
+            <p>On Sale: {product.on_sale ? "Yes" : "No"}</p>
         </CardWrapper>
     );
 }
