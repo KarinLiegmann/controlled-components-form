@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import Tags from './Tags'
+import isValidProductEntry from '../library/validateFunctions'
 
 
 import Button from './Button'
@@ -10,7 +11,7 @@ import Button from './Button'
 export default function Form({ submitFunction }) {
     const initialProduct = {
         product_name: '',
-        price: 0,
+        price: '',
         currency: '$USD',
         category: '',
         package_size: '', // camelCase?
@@ -20,6 +21,7 @@ export default function Form({ submitFunction }) {
     }
 
     const [product, setProduct] = useState(initialProduct)
+    const [isError, setIsError] = useState(false)
 
     const handleChange = ((event) => {
         const field = event.target;
@@ -31,10 +33,21 @@ export default function Form({ submitFunction }) {
         })
     })
 
+
+
+
+
     function submitForm(event) {
         event.preventDefault();
-        submitFunction(product); // wird eigentlich auf dem Parent aufgerufen
-        setProduct(initialProduct)
+        if (isValidProductEntry(product)) {
+            setIsError(false)
+            submitFunction(product); // wird eigentlich auf dem Parent aufgerufen
+            setProduct(initialProduct)
+        } else {
+            setIsError(true)
+        }
+
+
     }
 
     const addTag = (tag) => {
@@ -55,9 +68,8 @@ export default function Form({ submitFunction }) {
     }
 
     const removeLastTag = () => {
-        if (product.product_tags.length) {
+        if (product.product_tags.length > 0) {
             const lastTag = product.product_tags.pop()
-            console.log(lastTag)
             const tagsToKeep = product.product_tags.filter((tag) => (tag !== lastTag))
 
             setProduct({
@@ -84,6 +96,11 @@ export default function Form({ submitFunction }) {
     return (
         <MainForm onSubmit={submitForm}>
             <h2>New Product</h2>
+
+            {isError &&
+                <Error>
+                    <h3>There is an Error in your Form!</h3>
+                </Error>}
 
             <FormSection>
                 <label>Product Name: </label>
@@ -140,7 +157,7 @@ export default function Form({ submitFunction }) {
             <FormSection>
                 <label>Support contact: </label>
                 <input
-                    type="text"
+                    type="text" // type="email" useful for browser-implemented validation of email-adresses!
                     name="email"
                     onChange={handleChange}
                     value={product.email}
@@ -185,6 +202,11 @@ Form.propTypes = {
     onClickFunction: PropTypes.func,
 
 }
+
+const Error = styled.div`
+color: red;
+border: 2px solid red;
+`
 
 const MainForm = styled.form`
 background: linear-gradient(rgba(85, 204, 212, 1), rgba(199, 218, 199, 1), rgba(250, 182, 141, 1), rgba(247, 141, 124, 1), rgba(246, 103, 134, 1));

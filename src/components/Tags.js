@@ -52,6 +52,7 @@ export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, onArro
                     value={value}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
+                    placeholder="Type here"
                 />
             </TagDiv>
 

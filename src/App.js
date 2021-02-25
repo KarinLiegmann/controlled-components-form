@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import Form from './Form'
-import Card from './Card'
+import Form from './components/Form'
+import Card from './components/Card'
 import { v4 as uuidv4 } from 'uuid'
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
 
   return (
     <Wrapper className="App">
+      <h1>Add a Product</h1>
       <Form submitFunction={addProduct} />
 
       {products.map((product) => (
