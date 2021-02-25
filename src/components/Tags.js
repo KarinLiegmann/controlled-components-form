@@ -1,13 +1,17 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 
-export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, onArrowLeftHighlight, tags }) {
+export default function Tags({
+    createTag,
+    onDeleteTag,
+    onBackspaceDelete,
+    onArrowLeftHighlight,
+    tags }) {
+
     const [value, setValue] = useState('')
 
-
-
     const handleChange = (event) => setValue(event.target.value)
-
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -36,10 +40,10 @@ export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, onArro
     return (
         <TagWrapper>
             <label>Product Tags: </label>
+
             <TagDiv onKeyDown={() => handleKeyDown} >
                 {tags.map((tag, index) =>
                 (<span
-
                     key={index}>
                     {tag}
                     <i onClick={() => onDeleteTag(tag)}>
@@ -71,7 +75,6 @@ width: 330px;
         white-space: nowrap;
     }
 `
-
 
 const TagDiv = styled.div`
     background: white;

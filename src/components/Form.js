@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
-import Tags from './Tags'
+
 import isValidProductEntry from '../library/validateFunctions'
 
-
 import Button from './Button'
+import Tags from './Tags'
 
 
 export default function Form({ submitFunction }) {
@@ -33,30 +33,23 @@ export default function Form({ submitFunction }) {
         })
     })
 
-
-
-
-
     function submitForm(event) {
         event.preventDefault();
         if (isValidProductEntry(product)) {
             setIsError(false)
-            submitFunction(product); // wird eigentlich auf dem Parent aufgerufen
+            submitFunction(product);
             setProduct(initialProduct)
         } else {
             setIsError(true)
         }
-
-
     }
 
-    const addTag = (tag) => {
+    const addTag = (newTag) => {
         setProduct({
             ...product,
-            product_tags: [...product.product_tags, tag]
+            product_tags: [...product.product_tags, newTag]
         })
     }
-
 
     const deleteTag = (tagToDelete) => {
         const allRemainingTags = product.product_tags.filter((tag) => (tag !== tagToDelete))
@@ -79,18 +72,11 @@ export default function Form({ submitFunction }) {
         }
     }
 
-
-
     const highlightTag = (lengthToFind) => {
         if (product.product_tags.length === lengthToFind) {
             console.log(product.product_tags.value)
-
         }
-
     }
-
-
-
 
 
     return (
@@ -198,8 +184,8 @@ Form.propTypes = {
     price: PropTypes.number,
     currency: PropTypes.string,
     email: PropTypes.string,
-
-    onClickFunction: PropTypes.func,
+    product_tags: PropTypes.arrayOf(PropTypes.string),
+    on_sale: PropTypes.bool,
 
 }
 
