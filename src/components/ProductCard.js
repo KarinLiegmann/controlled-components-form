@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 
-export default function Card({ product }) {
+export default function ProductCard({ product }) {
     console.log(product)
     return (
         <CardWrapper>
@@ -18,7 +18,7 @@ export default function Card({ product }) {
     );
 }
 
-Card.propTypes = {
+ProductCard.propTypes = {
     product: PropTypes.object,
 }
 

@@ -8,7 +8,7 @@ import Button from './Button'
 import Tags from './Tags'
 
 
-export default function Form({ submitFunction }) {
+export default function ProductForm({ submitFunction }) {
     const initialProduct = {
         product_name: '',
         price: '',
@@ -179,7 +179,7 @@ export default function Form({ submitFunction }) {
     )
 }
 
-Form.propTypes = {
+ProductForm.propTypes = {
     product_name: PropTypes.string,
     price: PropTypes.number,
     currency: PropTypes.string,
@@ -192,6 +192,7 @@ Form.propTypes = {
 const Error = styled.div`
 color: red;
 border: 2px solid red;
+text-align: center;
 `
 
 const MainForm = styled.form`
