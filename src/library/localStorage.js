@@ -1,8 +1,14 @@
-export function saveToLocal(key, values) {
-    return (localStorage.setItem(key, JSON.stringify(values))
+function saveToLocal(key, values) {
+    return (localStorage.setItem(key, JSON.stringify([values]))
     )
 }
 
-export function loadFromLocal(key) {
-    return (JSON.parse(localStorage.getItem(key)))
+function loadFromLocal(key) {
+    try {
+        JSON.parse(localStorage.getItem(key))
+    } catch (error) {
+        (error) => console.error(error)
+    }
 }
+
+export { saveToLocal, loadFromLocal }

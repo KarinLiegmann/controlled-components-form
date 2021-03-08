@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { loadFromLocal, saveToLocal } from '../lib/localStorage';
+import { loadFromLocal, saveToLocal } from '../library/localStorage';
 
 export const useLocalStorage = (key, defaultValue) => {
     const initialValue = loadFromLocal(key) ?? defaultValue;
