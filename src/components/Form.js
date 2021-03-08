@@ -13,7 +13,7 @@ export default function Form({ submitFunction }) {
         price: 0,
         currency: '$USD',
         category: '',
-        package_size: '', // camelCase?
+        package_size: '',
         email: '',
         product_tags: [],
         on_sale: false
@@ -33,7 +33,7 @@ export default function Form({ submitFunction }) {
 
     function submitForm(event) {
         event.preventDefault();
-        submitFunction(product); // wird eigentlich auf dem Parent aufgerufen
+        submitFunction(product);
         setProduct(initialProduct)
     }
 
@@ -238,4 +238,5 @@ margin: 1.5rem 0;
     background: #F66987;
     color: white;
     }
+}
 `
