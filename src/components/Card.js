@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 
 export default function Card({ product }) {
@@ -15,6 +16,10 @@ export default function Card({ product }) {
             <p>On Sale: {product.on_sale ? "Yes" : "No"}</p>
         </CardWrapper>
     );
+}
+
+Card.propTypes = {
+    product: PropTypes.object,
 }
 
 const CardWrapper = styled.section`

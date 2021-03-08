@@ -1,16 +1,17 @@
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
-import Tags from './Tags'
 
+import isValidProductEntry from '../library/validateFunctions'
 
 import Button from './Button'
+import Tags from './Tags'
 
 
 export default function Form({ submitFunction }) {
     const initialProduct = {
         product_name: '',
-        price: 0,
+        price: '',
         currency: '$USD',
         category: '',
         package_size: '',
@@ -20,6 +21,7 @@ export default function Form({ submitFunction }) {
     }
 
     const [product, setProduct] = useState(initialProduct)
+    const [isError, setIsError] = useState(false)
 
     const handleChange = ((event) => {
         const field = event.target;
@@ -33,17 +35,21 @@ export default function Form({ submitFunction }) {
 
     function submitForm(event) {
         event.preventDefault();
-        submitFunction(product);
-        setProduct(initialProduct)
+        if (isValidProductEntry(product)) {
+            setIsError(false)
+            submitFunction(product);
+            setProduct(initialProduct)
+        } else {
+            setIsError(true)
+        }
     }
 
-    const addTag = (tag) => {
+    const addTag = (newTag) => {
         setProduct({
             ...product,
-            product_tags: [...product.product_tags, tag]
+            product_tags: [...product.product_tags, newTag]
         })
     }
-
 
     const deleteTag = (tagToDelete) => {
         const allRemainingTags = product.product_tags.filter((tag) => (tag !== tagToDelete))
@@ -55,9 +61,8 @@ export default function Form({ submitFunction }) {
     }
 
     const removeLastTag = () => {
-        if (product.product_tags.length) {
+        if (product.product_tags.length > 0) {
             const lastTag = product.product_tags.pop()
-            console.log(lastTag)
             const tagsToKeep = product.product_tags.filter((tag) => (tag !== lastTag))
 
             setProduct({
@@ -67,11 +72,21 @@ export default function Form({ submitFunction }) {
         }
     }
 
+    const highlightTag = (lengthToFind) => {
+        if (product.product_tags.length === lengthToFind) {
+            console.log(product.product_tags.value)
+        }
+    }
 
 
     return (
         <MainForm onSubmit={submitForm}>
             <h2>New Product</h2>
+
+            {isError &&
+                <Error>
+                    <h3>There is an Error in your Form!</h3>
+                </Error>}
 
             <FormSection>
                 <label>Product Name: </label>
@@ -128,7 +143,7 @@ export default function Form({ submitFunction }) {
             <FormSection>
                 <label>Support contact: </label>
                 <input
-                    type="text"
+                    type="text" // type="email" useful for browser-implemented validation of email-adresses!
                     name="email"
                     onChange={handleChange}
                     value={product.email}
@@ -141,6 +156,7 @@ export default function Form({ submitFunction }) {
                     createTag={addTag}
                     onDeleteTag={deleteTag}
                     onBackspaceDelete={removeLastTag}
+                    onArrowLeftHighlight={highlightTag}
                     tags={product.product_tags} />
             </div>
 
@@ -168,10 +184,15 @@ Form.propTypes = {
     price: PropTypes.number,
     currency: PropTypes.string,
     email: PropTypes.string,
-
-    onClickFunction: PropTypes.func,
+    product_tags: PropTypes.arrayOf(PropTypes.string),
+    on_sale: PropTypes.bool,
 
 }
+
+const Error = styled.div`
+color: red;
+border: 2px solid red;
+`
 
 const MainForm = styled.form`
 background: linear-gradient(rgba(85, 204, 212, 1), rgba(199, 218, 199, 1), rgba(250, 182, 141, 1), rgba(247, 141, 124, 1), rgba(246, 103, 134, 1));

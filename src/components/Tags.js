@@ -1,10 +1,15 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 
-export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, tags }) {
+export default function Tags({
+    createTag,
+    onDeleteTag,
+    onBackspaceDelete,
+    onArrowLeftHighlight,
+    tags }) {
+
     const [value, setValue] = useState('')
-
-
 
     const handleChange = (event) => setValue(event.target.value)
 
@@ -14,19 +19,31 @@ export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, tags }
             createTag(value)
             setValue('')
         }
-    }
+
+        if (event.key === 'Backspace') {
+            event.preventDefault()
+            onBackspaceDelete()
+        }
+
+        if (event.key === 'ArrowLeft') {
+            if (tags.length > 0) {
+                let newLength = tags.length
+                newLength = tags.length--
+                console.log(newLength, tags.value, 'length')
+                onArrowLeftHighlight(newLength)
+            }
+        }
+    };
+
+
 
     return (
         <TagWrapper>
             <label>Product Tags: </label>
-            <TagDiv onKeyDown={(event) => {
-                if (event.key === 'Backspace') {
-                    onBackspaceDelete()
-                }
-            }}>
+
+            <TagDiv onKeyDown={() => handleKeyDown} >
                 {tags.map((tag, index) =>
                 (<span
-
                     key={index}>
                     {tag}
                     <i onClick={() => onDeleteTag(tag)}>
@@ -39,10 +56,11 @@ export default function Tags({ createTag, onDeleteTag, onBackspaceDelete, tags }
                     value={value}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
-                    size="5" />
+                    placeholder="Type here"
+                />
             </TagDiv>
 
-        </TagWrapper>
+        </TagWrapper >
     )
 }
 
@@ -57,7 +75,6 @@ width: 330px;
         white-space: nowrap;
     }
 `
-
 
 const TagDiv = styled.div`
     background: white;
